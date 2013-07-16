@@ -10,6 +10,10 @@
 		03FA8D631793367E00DEE56F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03FA8D621793367E00DEE56F /* Foundation.framework */; };
 		03FA8D661793367E00DEE56F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FA8D651793367E00DEE56F /* main.m */; };
 		03FA8D6A1793367E00DEE56F /* BlockGlue.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03FA8D691793367E00DEE56F /* BlockGlue.1 */; };
+		03FA8D72179336D300DEE56F /* BlockGlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FA8D71179336D300DEE56F /* BlockGlue.m */; };
+		03FA8D751793457C00DEE56F /* BlockSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FA8D741793457C00DEE56F /* BlockSignature.m */; };
+		03FA8D781793461700DEE56F /* WoolObjCEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FA8D771793461700DEE56F /* WoolObjCEncoding.m */; };
+		03FA8D7B17953EF300DEE56F /* libffi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03FA8D7A17953EF200DEE56F /* libffi.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +35,14 @@
 		03FA8D651793367E00DEE56F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		03FA8D681793367E00DEE56F /* BlockGlue-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BlockGlue-Prefix.pch"; sourceTree = "<group>"; };
 		03FA8D691793367E00DEE56F /* BlockGlue.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = BlockGlue.1; sourceTree = "<group>"; };
+		03FA8D70179336D300DEE56F /* BlockGlue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockGlue.h; sourceTree = "<group>"; };
+		03FA8D71179336D300DEE56F /* BlockGlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockGlue.m; sourceTree = "<group>"; };
+		03FA8D731793457C00DEE56F /* BlockSignature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockSignature.h; sourceTree = "<group>"; };
+		03FA8D741793457C00DEE56F /* BlockSignature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockSignature.m; sourceTree = "<group>"; };
+		03FA8D761793461700DEE56F /* WoolObjCEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WoolObjCEncoding.h; sourceTree = "<group>"; };
+		03FA8D771793461700DEE56F /* WoolObjCEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WoolObjCEncoding.m; sourceTree = "<group>"; };
+		03FA8D791793463200DEE56F /* WoolBlockHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WoolBlockHelper.h; sourceTree = "<group>"; };
+		03FA8D7A17953EF200DEE56F /* libffi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libffi.dylib; path = usr/lib/libffi.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03FA8D7B17953EF300DEE56F /* libffi.dylib in Frameworks */,
 				03FA8D631793367E00DEE56F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -73,9 +86,17 @@
 		03FA8D641793367E00DEE56F /* BlockGlue */ = {
 			isa = PBXGroup;
 			children = (
+				03FA8D791793463200DEE56F /* WoolBlockHelper.h */,
+				03FA8D761793461700DEE56F /* WoolObjCEncoding.h */,
+				03FA8D771793461700DEE56F /* WoolObjCEncoding.m */,
 				03FA8D651793367E00DEE56F /* main.m */,
+				03FA8D731793457C00DEE56F /* BlockSignature.h */,
+				03FA8D741793457C00DEE56F /* BlockSignature.m */,
+				03FA8D70179336D300DEE56F /* BlockGlue.h */,
+				03FA8D71179336D300DEE56F /* BlockGlue.m */,
 				03FA8D691793367E00DEE56F /* BlockGlue.1 */,
 				03FA8D671793367E00DEE56F /* Supporting Files */,
+				03FA8D7A17953EF200DEE56F /* libffi.dylib */,
 			);
 			path = BlockGlue;
 			sourceTree = "<group>";
@@ -140,6 +161,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				03FA8D661793367E00DEE56F /* main.m in Sources */,
+				03FA8D72179336D300DEE56F /* BlockGlue.m in Sources */,
+				03FA8D751793457C00DEE56F /* BlockSignature.m in Sources */,
+				03FA8D781793461700DEE56F /* WoolObjCEncoding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,7 +177,7 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
@@ -186,7 +210,7 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
