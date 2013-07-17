@@ -1,6 +1,6 @@
 //
-//  BlockGlue.h
-//  BlockGlue
+//  WSSBlockInvocation.h
+//  WoolBlockInvocaiton
 //
 //  Created by Joshua Caswell on 7/14/13.
 //  Copyright (c) 2013 Josh Caswell. All rights reserved.
@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class BlockSignature;
+@class WSSBlockSignature;
 
-@interface BlockGlue : NSObject
+@interface WSSBlockInvocation : NSObject
 
-+ (instancetype)blockGlueWithSignature:(BlockSignature *)sig;
++ (instancetype)invocationWithSignature:(WSSBlockSignature *)sig;
 
-- (BlockSignature *)blockSignature;
+- (WSSBlockSignature *)blockSignature;
 
 - (void)setBlock:(id)block;
 - (void)addBlock:(id)block;

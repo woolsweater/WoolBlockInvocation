@@ -1,6 +1,6 @@
 //
 //  main.m
-//  BlockGlue
+//  WoolBlockInvocaiton
 //
 //  Created by Joshua Caswell on 7/14/13.
 //  Copyright (c) 2013 Josh Caswell. All rights reserved.
@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BlockGlue.h"
-#import "BlockSignature.h"
+#import "WSSBlockInvocation.h"
+#import "WSSBlockSignature.h"
 #import "WoolBlockHelper.h"
 
 typedef void (^StringBlock)(NSString *);
@@ -33,17 +33,19 @@ int main(int argc, const char * argv[])
             NSLog(@"%@", [s uppercaseString]);
         };
 
-        BlockGlue * glue = [BlockGlue blockGlueWithSignature:[BlockSignature signatureForBlock:b1]];
-        [glue addBlock:b1];
-        [glue addBlock:b2];
-        [glue addBlock:b3];
+        WSSBlockInvocation * invoc = [WSSBlockInvocation invocationWithSignature:[WSSBlockSignature signatureForBlock:b1]];
+        [invoc addBlock:b1];
+        [invoc addBlock:b2];
+        [invoc addBlock:b3];
         
-        StringBlock glued = (StringBlock)[glue invocationBlock];
+        StringBlock capsule = (StringBlock)[invoc invocationBlock];
         
-        glued(arg);
+        NSLog(@"Invocation block: ");
+        capsule(arg);
         
-        [glue setArgument:&arg atIndex:1];
-        [glue invoke];
+        NSLog(@"\n\n----------------------\nUsing -invoke:");
+        [invoc setArgument:&arg atIndex:1];
+        [invoc invoke];
         
     }
     return 0;

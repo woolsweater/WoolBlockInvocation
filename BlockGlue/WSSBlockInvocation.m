@@ -1,13 +1,13 @@
 //
-//  BlockGlue.m
-//  BlockGlue
+//  WSSBlockInvocation.m
+//  WoolBlockInvocaiton
 //
 //  Created by Joshua Caswell on 7/14/13.
 //  Copyright (c) 2013 Josh Caswell. All rights reserved.
 //
 
-#import "BlockGlue.h"
-#import "BlockSignature.h"
+#import "WSSBlockInvocation.h"
+#import "WSSBlockSignature.h"
 
 #import "WoolBlockHelper.h"
 
@@ -15,14 +15,21 @@
 
 #if !__has_feature(objc_arc)
 #define __bridge 
-#define __bridge_transfer 
+#define __bridge_transfer
+#define AUTORELEASE(obj) (obj)
+#define RETAIN(obj) (obj)
+#define SAFE_RETURN(obj) (obj)
+#else
+#define AUTORELEASE(obj) [(obj) autorelease]
+#define RETAIN(obj) [(obj) retain]
+#define SAFE_RETURN(obj) AUTORELEASE(RETAIN((obj)))
 #endif // Exclude if compiled with ARC
 
 ffi_type * libffi_type_for_objc_encoding(const char * str);
 
-@interface BlockGlue ()
+@interface WSSBlockInvocation ()
 
-- (id)initWithBlockSignature:(BlockSignature *)sig;
+- (id)initWithBlockSignature:(WSSBlockSignature *)sig;
 - (void *)allocate:(size_t)size;
 
 /* Construct a list of ffi_type * describing the method signature of this invocation. */
@@ -30,9 +37,9 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
 
 @end
 
-@implementation BlockGlue
+@implementation WSSBlockInvocation
 {
-    BlockSignature * blockSignature;
+    WSSBlockSignature * blockSignature;
     NSMutableArray * blocks;
     void ** return_values;
     void ** arguments;
@@ -41,24 +48,24 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
     NSMutableArray * retainedReturnValues;
 }
 
-+ (instancetype)blockGlueWithSignature:(BlockSignature *)sig
++ (instancetype)invocationWithSignature:(WSSBlockSignature *)sig
 {
-    return [[[self alloc] initWithBlockSignature:sig] autorelease];
+    return AUTORELEASE([[self alloc] initWithBlockSignature:sig]);
 }
 
 - (id)init
 {
     [NSException raise:NSInvalidArgumentException
-                format:@"Use blockGlueWithSignature: to create a new instance"];
+                format:@"Use invocationWithSignature: to create a new instance"];
     return nil;
 }
 
-- (id)initWithBlockSignature:(BlockSignature *)sig
+- (id)initWithBlockSignature:(WSSBlockSignature *)sig
 {
     self = [super init];
     if( !self ) return nil;
     
-    blockSignature = [sig retain];
+    blockSignature = RETAIN(sig);
     blocks = [NSMutableArray new];
     allocations = [NSMutableArray new];
     
@@ -70,6 +77,8 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
 #if !__has_feature(objc_arc)
 - (void)dealloc
 {
+    // All non-object allocations were handled via allocate: and will
+    // be free'd along with the array of NSMutableData instances.
     [retainedReturnValues release];
     [retainedArgs release];
     
@@ -89,7 +98,7 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
     return [dat mutableBytes];
 }
 
-- (BlockSignature *)blockSignature
+- (WSSBlockSignature *)blockSignature
 {
     return blockSignature;
 }
@@ -116,12 +125,12 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
 
 - (id)blockAtIndex:(NSUInteger)idx
 {
-    return [[[blocks objectAtIndex:idx] retain] autorelease];
+    return SAFE_RETURN([blocks objectAtIndex:idx]);
 }
 
 - (NSArray *)allBlocks
 {
-    return [[blocks copy] autorelease];
+    return AUTORELEASE([blocks copy]);
 }
 
 - (void)setArgument:(void *)arg atIndex:(NSInteger)idx
@@ -231,7 +240,9 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
             idx += 1;
         }
         va_end(args);
+        
         [self invoke];
+    
     } copy];
 }
 

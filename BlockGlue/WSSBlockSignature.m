@@ -1,17 +1,17 @@
 //
-//  BlockSignature.m
-//  BlockGlue
+//  WSSBlockSignature.m
+//  WoolBlockInvocaiton
 //
 //  Created by Joshua Caswell on 7/14/13.
 //  Copyright (c) 2013 Josh Caswell. All rights reserved.
 //
 
-#import "BlockSignature.h"
+#import "WSSBlockSignature.h"
 
 #import "WoolBlockHelper.h"
 #import "WoolObjCEncoding.h"
 
-@implementation BlockSignature
+@implementation WSSBlockSignature
 {
     char * encoding;
     char ** argtypes;

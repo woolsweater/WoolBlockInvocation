@@ -1,6 +1,6 @@
 //
-//  BlockSignature.h
-//  BlockGlue
+//  WSSBlockSignature.h
+//  WoolBlockInvocaiton
 //
 //  Created by Joshua Caswell on 7/14/13.
 //  Copyright (c) 2013 Josh Caswell. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BlockSignature : NSObject
+@interface WSSBlockSignature : NSObject
 
 + (instancetype)signatureWithObjCTypes:(const char *)types;
 + (instancetype)signatureForBlock:(id)block;
