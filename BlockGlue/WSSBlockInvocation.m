@@ -13,18 +13,6 @@
 
 #include <ffi/ffi.h>
 
-#if !__has_feature(objc_arc)
-#define __bridge 
-#define __bridge_transfer
-#define AUTORELEASE(obj) (obj)
-#define RETAIN(obj) (obj)
-#define SAFE_RETURN(obj) (obj)
-#else
-#define AUTORELEASE(obj) [(obj) autorelease]
-#define RETAIN(obj) [(obj) retain]
-#define SAFE_RETURN(obj) AUTORELEASE(RETAIN((obj)))
-#endif // Exclude if compiled with ARC
-
 ffi_type * libffi_type_for_objc_encoding(const char * str);
 
 @interface WSSBlockInvocation ()
@@ -115,11 +103,15 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
 - (void)setBlock:(id)block
 {
     [blocks removeAllObjects];
-    [blocks addObject:block];
+    [self addBlock:block];
 }
 
 - (void)addBlock:(id)block
 {
+    WSSBlockSignature * newSig = [WSSBlockSignature signatureForBlock:block];
+    NSAssert([newSig isEqual:blockSignature],
+             @"Signature for added Block %@ does not match existing signature "
+             "%@ for %@", newSig, blockSignature, self);
     [blocks addObject:block];
 }
 
@@ -144,12 +136,10 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
         arguments[0] = [self allocate:sizeof(id)];
     }
     
-    free(arguments[idx]);
-    
     size_t size = [blockSignature sizeOfArgumentAtIndex:idx];
     arguments[idx] = [self allocate:size];
     if( retainsArguments && [blockSignature argumentAtIndexIsObject:idx] ){
-        id obj = (__bridge_transfer id)*(void **)arg;
+        id obj = (__bridge id)*(void **)arg;
         [retainedArgs addObject:obj];
     }
     memcpy(arguments[idx], arg, size);
@@ -189,13 +179,13 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
         retainedReturnValues = [NSMutableArray new];
     }
     
+    ffi_cif inv_cif;
+    ffi_status prep_status = ffi_prep_cif(&inv_cif, FFI_DEFAULT_ABI,
+                                          (unsigned int)num_args,
+                                          ret_type, arg_types);
+    NSAssert(prep_status == FFI_OK, @"ffi_prep_cif failed for", self);
+    
     for( NSUInteger idx = 0; idx < [blocks count]; idx++ ){
-        
-        ffi_cif inv_cif;
-        ffi_status prep_status = ffi_prep_cif(&inv_cif, FFI_DEFAULT_ABI,
-                                              (unsigned int)num_args,
-                                              ret_type, arg_types);
-        NSAssert(prep_status == FFI_OK, @"ffi_prep_cif failed for", self);
         
         void * ret_val = NULL;
         if( ret_size > 0 ){
@@ -210,7 +200,7 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
         return_values[idx] = ret_val;
         
         if( doRetainReturnVals ){
-            [retainedReturnValues addObject:(id)ret_val];
+            [retainedReturnValues addObject:(__bridge id)ret_val];
         }
     }
 }
@@ -227,14 +217,7 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
         NSUInteger idx = 1;
         while( idx < [blockSignature numberOfArguments] ){
             
-            if( [blockSignature argumentAtIndexIsPointer:idx] ){
-                    
-                    [self setArgument:&arg atIndex:idx];
-                
-            } else {
-                    
-                    [self setArgument:arg atIndex:idx];
-            }
+            [self setArgument:&arg atIndex:idx];
             
             arg = va_arg(args, void *);
             idx += 1;

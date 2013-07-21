@@ -11,6 +11,12 @@
 #import "WoolBlockHelper.h"
 #import "WoolObjCEncoding.h"
 
+@interface WSSBlockSignature ()
+
+- (void)setAttributesFromEncoding:(const char *)newEncoding;
+
+@end
+
 @implementation WSSBlockSignature
 {
     char * encoding;
@@ -24,9 +30,9 @@
     id newinstance = [self new];
     if( !self ) return nil;
     
-    [newinstance setEncoding:types];
+    [newinstance setAttributesFromEncoding:types];
     
-    return [newinstance autorelease];
+    return AUTORELEASE(newinstance);
 }
 
 + (instancetype)signatureForBlock:(id)block
@@ -34,39 +40,64 @@
     return [self signatureWithObjCTypes:BlockSig(block)];
 }
 
-#if !__has_feature(objc_arc)
 - (void)dealloc
 {
     free(encoding);
-    if( argtypes ){
-        for( NSUInteger i = 0; i < numargs; i++ ){
-            free(argtypes[i]);
-        }
+    for( NSUInteger i = 0; i < numargs; i++ ){
+        free(argtypes[i]);
     }
     free(argtypes);
     free(rettype);
+    
+#if !__has_feature(objc_arc)
     [super dealloc];
-}
 #endif // Exclude if compiled with ARC
-
-
-- (const char *)encoding
-{
-    return encoding;
 }
 
-static void parse_encoding_into_types(const char * encoding, NSUInteger numargs, char ** typesarray)
+- (BOOL)isEqual:(id)other
 {
-    for( NSUInteger idx = 0; idx < numargs; idx++ ){
-        int ignored;
-        char * arg = encoding_findArgument(encoding, (int)idx, &ignored);
-        typesarray[idx] = arg_createTypeString(arg);
+    if( self == other ) return YES;
+    
+    if( ![other isKindOfClass:[self class]] ) return NO;
+    
+    WSSBlockSignature * otherSig = other;
+    if( 0 != strcmp(rettype, otherSig->rettype) ) return NO;
+    
+    for( NSUInteger i = 0; i < numargs; i++ ){
+        if( 0 != strcmp(argtypes[i], otherSig->argtypes[i]) ) return NO;
     }
+    
+    return YES;
 }
 
-- (void)setEncoding:(const char *)newEncoding
+- (NSUInteger)hash
 {
-    if( encoding != newEncoding ){
+    return [[NSData dataWithBytesNoCopy:encoding
+                                 length:strlen(encoding)]
+                hash];
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p>: "
+                               "Encoding: %s, number of arguments: %ld, "
+                               "return type: %s",
+                               [self class], self, encoding, numargs, rettype];
+}
+
+static int strcmpNULLSafe(const char * s1, const char * s2)
+{
+    s1 = s1 != NULL ? s1 : "";
+    s2 = s2 != NULL ? s2 : "";
+    
+    return strcmp(s1, s2);
+}
+
+- (void)setAttributesFromEncoding:(const char *)newEncoding
+{
+    if( encoding != newEncoding &&
+        0 != strcmpNULLSafe(encoding, newEncoding) )
+    {
         free(encoding);
         encoding = malloc(strlen(newEncoding)+1);
         strcpy(encoding, newEncoding);
@@ -81,7 +112,11 @@ static void parse_encoding_into_types(const char * encoding, NSUInteger numargs,
         free(argtypes);
         
         argtypes = malloc(sizeof(char *) * numargs);
-        parse_encoding_into_types(encoding, numargs, argtypes);
+        for( NSUInteger idx = 0; idx < numargs; idx++ ){
+            int ignored;
+            char * arg = encoding_findArgument(encoding, (int)idx, &ignored);
+            argtypes[idx] = arg_createTypeString(arg);
+        }
         
         free(rettype);
         rettype = arg_createTypeString(encoding);
@@ -92,7 +127,8 @@ static void parse_encoding_into_types(const char * encoding, NSUInteger numargs,
 {
     if( idx >= numargs ){
         [NSException raise:NSInvalidArgumentException
-                    format:@"Index %ld out of range for number of arguments %ld for %@", idx, numargs, self];
+                    format:@"Index %ld out of range for number of arguments"
+                            "%ld for %@", idx, numargs, self];
     }
     
     return argtypes[idx];

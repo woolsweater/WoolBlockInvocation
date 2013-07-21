@@ -229,7 +229,7 @@
 		03FA8D6E1793367E00DEE56F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BlockGlue/WoolBlockInvocation-Prefix.pch";
 				PRODUCT_NAME = WoolBlockInvocation;
@@ -239,7 +239,7 @@
 		03FA8D6F1793367E00DEE56F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BlockGlue/WoolBlockInvocation-Prefix.pch";
 				PRODUCT_NAME = WoolBlockInvocation;
@@ -265,6 +265,7 @@
 				03FA8D6F1793367E00DEE56F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

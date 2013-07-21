@@ -5,6 +5,9 @@
 // notice below for license information.
 // Portions Copyright (c) 2012 Joshua Caswell.
 
+#ifndef WoolObjCEncoding_h
+#define WoolObjCEncoding_h
+
 /* 
  * Portions Copyright (c) 1999-2007 Apple Computer, Inc. All Rights
  * Reserved.
@@ -79,3 +82,4 @@ unsigned int encoding_numberOfArguments(const char *typedesc);
  * parameter (self), adjusting the stack length and offsets. */
 char * encoding_createWithInsertedSEL(const char * original_encoding);
 
+#endif /* WoolObjCEncoding_h */
