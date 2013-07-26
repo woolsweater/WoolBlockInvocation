@@ -96,6 +96,14 @@
     STAssertThrows([blockInvocation getReturnValue:&retVal fromIndex:0], nil);
 }
 
+- (void)testInvokingWithoutSettingArgumentsFails
+{
+    blockInvocation = [WSSBlockInvocation invocationWithBlocks:@[^(NSString * s){}]];
+    
+    STAssertThrows([blockInvocation invoke],
+                   @"Invoking without having set arguments should raise.");
+}
+
 - (void)testSingleIntegerReturnValue
 {
     blockInvocation = [WSSBlockInvocation invocationWithBlocks:@[int_b1]];

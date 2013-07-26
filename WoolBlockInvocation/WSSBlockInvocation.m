@@ -204,7 +204,12 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
 
 - (void)invoke
 {
-    NSAssert([blocks count] > 0, @"Cannot invoke %@ without Block", self);
+    NSAssert([blocks count] > 0,
+             @"Cannot invoke %@ without at least one Block", self);
+    if( [blockSignature numberOfArguments] > 1 ){
+        NSAssert(arguments[1] != NULL,
+                 @"Cannot invoke %@ without arguments having been set", self);
+    }
     
     NSUInteger num_args = [blockSignature numberOfArguments];
     

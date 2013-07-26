@@ -80,6 +80,7 @@
 
 /* Invoke each Block in turn, passing itself as the first argument and the
  * invocation's set arguments for the remainder, saving any return values.
+ * Trying to invoke without having set required arguments raises an exception.
  */
 - (void)invoke;
 
