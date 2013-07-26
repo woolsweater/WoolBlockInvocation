@@ -173,6 +173,8 @@ char * arg_getType(const char *argdesc, char *buf, size_t buf_size)
     //if( len < dst_len ) memset(dst+len, 0, dst_len - len);
 }
 
+/* Takes a pointer to an argument encoding and returns a string which is owned
+ * by the caller containing just the type portion of the encoding. */
 char * arg_createTypeString(const char *argdesc)
 {
     size_t len;

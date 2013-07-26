@@ -158,11 +158,6 @@ static int strcmpNULLSafe(const char * s1, const char * s2)
     return numargs;
 }
 
-- (NSUInteger)frameLength
-{
-    return (NSUInteger)encoding_stackSize(encoding);
-}
-
 - (const char *)returnType
 {
     return rettype;
@@ -173,7 +168,7 @@ static int strcmpNULLSafe(const char * s1, const char * s2)
     return arg_isObjectType([self returnType]);
 }
 
-- (NSUInteger)returnSize
+- (NSUInteger)returnLength
 {
     NSUInteger retsize, ignored;
     NSGetSizeAndAlignment(rettype, &retsize, &ignored);

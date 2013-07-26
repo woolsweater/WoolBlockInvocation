@@ -43,24 +43,33 @@
     [super tearDown];
 }
 
-- (void)testSettingBlockLeavesOnlyOneBlock
-{
-    blockInvocation = [WSSBlockInvocation invocationWithBlocks:@[void_b1, void_b2, void_b3]];
-    
-    [blockInvocation setBlock:^{}];
-    
-    NSUInteger count = [[blockInvocation allBlocks] count];
-    STAssertEquals((NSUInteger)1, count,
-                   @"Using setBlock: should leave only one Block in "
-                   "the invocation's list. Have %ld", count);
-}
-
 - (void)testCreatingWithMismatchedSigsFails
 {
     void (^typed_b)(NSString *) = ^(NSString * s){};
     
     STAssertThrows((blockInvocation = [WSSBlockInvocation invocationWithBlocks:@[void_b1, void_b2, typed_b]]),
                    @"Creating an invocation with Blocks of varied signatures should raise.");
+}
+
+- (void)testAddingBlockWithMismatchedSigFails
+{
+    void (^typed_b)(NSString *) = ^(NSString * s){};
+    
+    blockInvocation = [WSSBlockInvocation invocationWithBlocks:@[void_b1]];
+    
+    STAssertThrows([blockInvocation addBlock:typed_b],
+                   @"Adding a Block with different signature should raise.");
+}
+
+- (void)testSettingBlocksArrayWithMismatchedSigsFails
+{
+    void (^typed_b)(NSString *) = ^(NSString * s){};
+    
+    blockInvocation = [WSSBlockInvocation invocationWithBlocks:@[typed_b]];
+    
+    STAssertThrows(([blockInvocation setBlocks:@[void_b1, void_b2]]),
+                   @"Setting new array of Blocks with signature not matching "
+                   "original should raise.");
 }
 
 - (void)testSettingArgumentInSlotForBlockFails
@@ -75,16 +84,16 @@
 {
     blockInvocation = [WSSBlockInvocation invocationWithBlocks:@[int_b1]];
 
-    int ret_val;
-    STAssertThrows([blockInvocation getReturnValue:&ret_val], nil);
+    int retVal;
+    STAssertThrows([blockInvocation getReturnValue:&retVal fromIndex:0], nil);
 }
 
 - (void)testAskingForSingleReturnValueWithMultipleBlocksFails
 {
     blockInvocation = [WSSBlockInvocation invocationWithBlocks:@[int_b1, [int_b1 copy], [int_b1 copy]]];
     
-    int ret_val;
-    STAssertThrows([blockInvocation getReturnValue:&ret_val], nil);
+    int retVal;
+    STAssertThrows([blockInvocation getReturnValue:&retVal fromIndex:0], nil);
 }
 
 - (void)testSingleIntegerReturnValue
@@ -93,7 +102,7 @@
     
     [blockInvocation invoke];
     int retVal;
-    [blockInvocation getReturnValue:&retVal];
+    [blockInvocation getReturnValue:&retVal fromIndex:0];
     STAssertEquals(retVal, INT_CONST,
                    @"Expected %d but got %d", INT_CONST, retVal);
 
@@ -107,7 +116,7 @@
     [blockInvocation invoke];
     
     void * return_p;
-    [blockInvocation getReturnValue:&return_p];
+    [blockInvocation getReturnValue:&return_p fromIndex:0];
     // ARC will emit an extra release if this is not __unsafe_unretained
     id retVal = (__bridge __unsafe_unretained id)return_p;
     
@@ -120,7 +129,7 @@
     
     [blockInvocation invoke];
     float retVal;
-    [blockInvocation getReturnValue:&retVal];
+    [blockInvocation getReturnValue:&retVal fromIndex:0];
     
     STAssertEquals(retVal, FLOAT_CONST,
                    @"Expected %f but got %f", FLOAT_CONST, retVal);
@@ -131,7 +140,7 @@
     blockInvocation = [WSSBlockInvocation invocationWithBlocks:@[int_b1, [int_b1 copy], [int_b1 copy]]];
     
     [blockInvocation invoke];
-    NSUInteger numVals = [[blockInvocation allBlocks] count];
+    NSUInteger numVals = [blockInvocation numberOfBlocks];
     void ** retValues = [blockInvocation copyReturnValues];
     
     for( NSUInteger i = 0; i < numVals; i++ ){
@@ -151,7 +160,7 @@
     
     void ** returnValues = [blockInvocation copyReturnValues];
     
-    NSUInteger numBlocks = [[blockInvocation allBlocks] count];
+    NSUInteger numBlocks = [blockInvocation numberOfBlocks];
     
     for( NSUInteger i = 0; i < numBlocks; i++ ){
         float retVal = *(float *)(returnValues[i]);
@@ -170,7 +179,7 @@
     
     [blockInvocation invoke];
     
-    NSUInteger numVals = [[blockInvocation allBlocks] count];
+    NSUInteger numVals = [blockInvocation numberOfBlocks];
     void ** retValues = [blockInvocation copyReturnValues];
     
     for( NSUInteger i = 0; i < numVals; i++ ){
@@ -394,7 +403,7 @@ typedef void (^StringBlock)(NSString *, NSString *, int);
     
     capsule();
     
-    NSUInteger numVals = [[blockInvocation allBlocks] count];
+    NSUInteger numVals = [blockInvocation numberOfBlocks];
     void ** retValues = [blockInvocation copyReturnValues];
     
     for( NSUInteger i = 0; i < numVals; i++ ){

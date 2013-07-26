@@ -92,6 +92,11 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
     return blockSignature;
 }
 
+- (NSUInteger)blockReturnLength
+{
+    return [blockSignature returnLength];
+}
+
 - (void)setRetainsArguments:(BOOL)shouldRetainArguments
 {
     if( shouldRetainArguments && !retainedArgs ){
@@ -101,10 +106,9 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
     retainsArguments = shouldRetainArguments;
 }
 
-- (void)setBlock:(id)block
+- (NSUInteger)numberOfBlocks
 {
-    [blocks removeAllObjects];
-    [self addBlock:block];
+    return [blocks count];
 }
 
 - (void)addBlock:(id)block
@@ -160,19 +164,22 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
 
 - (void)getReturnValue:(void *)buffer
 {
+    [self getReturnValue:buffer fromIndex:0];
+}
+
+- (void)getReturnValue:(void *)buffer fromIndex:(NSUInteger)idx
+{
     NSAssert(return_values != NULL, @"No return value set for %@", self);
-    NSAssert([blocks count] < 2,
-             @"Cannot get single return value for %@; "
-             "more than one value present", self);
+    NSAssert([blocks count] > idx,
+             @"Getting return value at index %ld out of range for number of "
+             "Blocks %ld", idx, [blocks count]);
     
-    memcpy(buffer, return_values[0], [blockSignature returnSize]);
-    return;
+    memcpy(buffer, return_values[idx], [blockSignature returnLength]);
 }
 
 - (void **)copyReturnValues
 {
     NSAssert(return_values != NULL, @"No return value set for %@", self);
-    
     
     void ** buffer = malloc(sizeof(void *) * [blocks count]);
     if( [blockSignature returnTypeIsObject] ){
@@ -185,7 +192,7 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
                                    range:(NSRange){0, [blocks count]}];
     }
     else {
-        NSUInteger return_size = [blockSignature returnSize];
+        NSUInteger return_size = [blockSignature returnLength];
         for( NSUInteger i = 0; i < [blocks count]; i++ ){
             buffer[i] = malloc(return_size);
             memcpy(buffer[i], return_values[i], return_size);
@@ -205,7 +212,7 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
     ffi_type * return_type;
     return_type = libffi_type_for_objc_encoding([blockSignature returnType]);
     
-    NSUInteger return_size = [blockSignature returnSize];
+    NSUInteger return_size = [blockSignature returnLength];
     BOOL doRetainReturnVals = NO;
     if( return_size > 0 ){
         

@@ -10,18 +10,26 @@
 
 @interface WSSBlockSignature : NSObject
 
+/* Create a Block signature object representing the given encoding string. */
 + (instancetype)signatureWithObjCTypes:(const char *)types;
+
+/* Create a Block signature object representing the signature of the
+ * given Block.
+ */
 + (instancetype)signatureForBlock:(id)block;
 
+/* The @encode string for the argument at the specified index. */
 - (const char *)argumentTypeAtIndex:(NSUInteger)idx;
 - (BOOL)argumentAtIndexIsObject:(NSUInteger)idx;
 - (BOOL)argumentAtIndexIsPointer:(NSUInteger)idx;
-
+/* The size in bytes of the argument type at the specified index. */
 - (NSUInteger)sizeOfArgumentAtIndex:(NSUInteger)idx;
 - (NSUInteger)numberOfArguments;
-- (NSUInteger)frameLength;
+
+/* The @encode string for the return type. */
 - (const char *)returnType;
 - (BOOL)returnTypeIsObject;
-- (NSUInteger)returnSize;
+/* The size in bytes of the return type. */
+- (NSUInteger)returnLength;
 
 @end
