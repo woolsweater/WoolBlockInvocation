@@ -169,7 +169,7 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
     return;
 }
 
-- (void **)getReturnValues
+- (void **)copyReturnValues
 {
     NSAssert(return_values != NULL, @"No return value set for %@", self);
     
@@ -178,7 +178,7 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
     if( [blockSignature returnTypeIsObject] ){
         
         // Casting through void * here doesn't seem correct, but it's the only
-        // way to get the compiler not to complain -- __bridge casts error
+        // way to get the compiler not to complain -- __bridge casts error out
         // http://brokaw.github.io/2012/10/18/casting-indirect-pointers-with-arc.html
         // has some related information.
         [retainedReturnValues getObjects:(__unsafe_unretained id *)(void *)buffer
@@ -246,20 +246,17 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
 
 - (id)invocationBlock
 {
-    // Return a block which encapsulates the invocation of all the Blocks.
-    // This really only makes sense for a Block signature with void return.
     return [^void (void * arg1, ...){
         [self setRetainsArguments:YES];
         va_list args;
         va_start(args, arg1);
         void * arg = arg1;
-        NSUInteger idx = 1;
-        while( idx < [blockSignature numberOfArguments] ){
+        NSUInteger numArguments = [blockSignature numberOfArguments];
+        for( NSUInteger idx = 1; idx < numArguments; idx++ ){
             
             [self setArgument:&arg atIndex:idx];
             
             arg = va_arg(args, void *);
-            idx += 1;
         }
         va_end(args);
         
