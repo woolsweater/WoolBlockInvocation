@@ -7,11 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		033A7F07179DC86300F07B86 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 033A7EFE179DC84300F07B86 /* main.m */; };
+		033A7F08179DC86300F07B86 /* WoolObjCEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 033A7F02179DC84300F07B86 /* WoolObjCEncoding.m */; };
+		033A7F09179DC86300F07B86 /* WSSBlockInvocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 033A7F04179DC84300F07B86 /* WSSBlockInvocation.m */; };
+		033A7F0A179DC86300F07B86 /* WSSBlockSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 033A7F06179DC84300F07B86 /* WSSBlockSignature.m */; };
+		03B0780617A25EEA00FB0FFE /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03B0780517A25EEA00FB0FFE /* SenTestingKit.framework */; };
+		03B0780817A25EEA00FB0FFE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03B0780717A25EEA00FB0FFE /* Cocoa.framework */; };
+		03B0781217A25EEA00FB0FFE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03B0781017A25EEA00FB0FFE /* InfoPlist.strings */; };
+		03B0781B17A25F3400FB0FFE /* WoolBlockInvocationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B0781A17A25F3400FB0FFE /* WoolBlockInvocationTests.m */; };
+		03B0781E17A2609000FB0FFE /* WoolObjCEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 033A7F02179DC84300F07B86 /* WoolObjCEncoding.m */; };
+		03B0781F17A2609000FB0FFE /* WSSBlockSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 033A7F06179DC84300F07B86 /* WSSBlockSignature.m */; };
+		03B0782017A2609000FB0FFE /* WSSBlockInvocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 033A7F04179DC84300F07B86 /* WSSBlockInvocation.m */; };
+		03B0782117A2609E00FB0FFE /* libffi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03FA8D7A17953EF200DEE56F /* libffi.dylib */; };
 		03FA8D631793367E00DEE56F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03FA8D621793367E00DEE56F /* Foundation.framework */; };
-		03FA8D661793367E00DEE56F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FA8D651793367E00DEE56F /* main.m */; };
-		03FA8D72179336D300DEE56F /* WSSBlockInvocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FA8D71179336D300DEE56F /* WSSBlockInvocation.m */; };
-		03FA8D751793457C00DEE56F /* WSSBlockSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FA8D741793457C00DEE56F /* WSSBlockSignature.m */; };
-		03FA8D781793461700DEE56F /* WoolObjCEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 03FA8D771793461700DEE56F /* WoolObjCEncoding.m */; };
 		03FA8D7B17953EF300DEE56F /* libffi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03FA8D7A17953EF200DEE56F /* libffi.dylib */; };
 /* End PBXBuildFile section */
 
@@ -28,21 +36,42 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		033A7EFE179DC84300F07B86 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = WoolBlockInvocation/main.m; sourceTree = SOURCE_ROOT; };
+		033A7EFF179DC84300F07B86 /* WoolBlockHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WoolBlockHelper.h; path = WoolBlockInvocation/WoolBlockHelper.h; sourceTree = SOURCE_ROOT; };
+		033A7F00179DC84300F07B86 /* WoolBlockInvocation-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "WoolBlockInvocation-Prefix.pch"; path = "WoolBlockInvocation/WoolBlockInvocation-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		033A7F01179DC84300F07B86 /* WoolObjCEncoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WoolObjCEncoding.h; path = WoolBlockInvocation/WoolObjCEncoding.h; sourceTree = SOURCE_ROOT; };
+		033A7F02179DC84300F07B86 /* WoolObjCEncoding.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = WoolObjCEncoding.m; path = WoolBlockInvocation/WoolObjCEncoding.m; sourceTree = SOURCE_ROOT; };
+		033A7F03179DC84300F07B86 /* WSSBlockInvocation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WSSBlockInvocation.h; path = WoolBlockInvocation/WSSBlockInvocation.h; sourceTree = SOURCE_ROOT; };
+		033A7F04179DC84300F07B86 /* WSSBlockInvocation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = WSSBlockInvocation.m; path = WoolBlockInvocation/WSSBlockInvocation.m; sourceTree = SOURCE_ROOT; };
+		033A7F05179DC84300F07B86 /* WSSBlockSignature.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WSSBlockSignature.h; path = WoolBlockInvocation/WSSBlockSignature.h; sourceTree = SOURCE_ROOT; };
+		033A7F06179DC84300F07B86 /* WSSBlockSignature.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = WSSBlockSignature.m; path = WoolBlockInvocation/WSSBlockSignature.m; sourceTree = SOURCE_ROOT; };
+		03B0780417A25EEA00FB0FFE /* WoolBlockInvocationTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WoolBlockInvocationTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		03B0780517A25EEA00FB0FFE /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		03B0780717A25EEA00FB0FFE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		03B0780A17A25EEA00FB0FFE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		03B0780B17A25EEA00FB0FFE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		03B0780C17A25EEA00FB0FFE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		03B0780F17A25EEA00FB0FFE /* WoolBlockInvocationTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WoolBlockInvocationTests-Info.plist"; sourceTree = "<group>"; };
+		03B0781117A25EEA00FB0FFE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		03B0781317A25EEA00FB0FFE /* WoolBlockInvocationTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WoolBlockInvocationTests.h; sourceTree = "<group>"; };
+		03B0781617A25EEA00FB0FFE /* WoolBlockInvocationTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WoolBlockInvocationTests-Prefix.pch"; sourceTree = "<group>"; };
+		03B0781A17A25F3400FB0FFE /* WoolBlockInvocationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WoolBlockInvocationTests.m; sourceTree = "<group>"; };
 		03FA8D5F1793367E00DEE56F /* WoolBlockInvocation */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = WoolBlockInvocation; sourceTree = BUILT_PRODUCTS_DIR; };
 		03FA8D621793367E00DEE56F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		03FA8D651793367E00DEE56F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = main.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		03FA8D681793367E00DEE56F /* WoolBlockInvocation-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "WoolBlockInvocation-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		03FA8D70179336D300DEE56F /* WSSBlockInvocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WSSBlockInvocation.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		03FA8D71179336D300DEE56F /* WSSBlockInvocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WSSBlockInvocation.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		03FA8D731793457C00DEE56F /* WSSBlockSignature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WSSBlockSignature.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		03FA8D741793457C00DEE56F /* WSSBlockSignature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WSSBlockSignature.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		03FA8D761793461700DEE56F /* WoolObjCEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WoolObjCEncoding.h; sourceTree = "<group>"; };
-		03FA8D771793461700DEE56F /* WoolObjCEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WoolObjCEncoding.m; sourceTree = "<group>"; };
-		03FA8D791793463200DEE56F /* WoolBlockHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WoolBlockHelper.h; sourceTree = "<group>"; };
 		03FA8D7A17953EF200DEE56F /* libffi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libffi.dylib; path = usr/lib/libffi.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		03B0780017A25EEA00FB0FFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03B0782117A2609E00FB0FFE /* libffi.dylib in Frameworks */,
+				03B0780617A25EEA00FB0FFE /* SenTestingKit.framework in Frameworks */,
+				03B0780817A25EEA00FB0FFE /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		03FA8D5C1793367E00DEE56F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -55,10 +84,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03B0780917A25EEA00FB0FFE /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				03B0780A17A25EEA00FB0FFE /* AppKit.framework */,
+				03B0780B17A25EEA00FB0FFE /* CoreData.framework */,
+				03B0780C17A25EEA00FB0FFE /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		03B0780D17A25EEA00FB0FFE /* WoolBlockInvocationTests */ = {
+			isa = PBXGroup;
+			children = (
+				03B0781317A25EEA00FB0FFE /* WoolBlockInvocationTests.h */,
+				03B0781A17A25F3400FB0FFE /* WoolBlockInvocationTests.m */,
+				03B0780E17A25EEA00FB0FFE /* Supporting Files */,
+			);
+			path = WoolBlockInvocationTests;
+			sourceTree = "<group>";
+		};
+		03B0780E17A25EEA00FB0FFE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				03B0780F17A25EEA00FB0FFE /* WoolBlockInvocationTests-Info.plist */,
+				03B0781017A25EEA00FB0FFE /* InfoPlist.strings */,
+				03B0781617A25EEA00FB0FFE /* WoolBlockInvocationTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		03FA8D561793367E00DEE56F = {
 			isa = PBXGroup;
 			children = (
 				03FA8D641793367E00DEE56F /* WoolBlockInvocation */,
+				03B0780D17A25EEA00FB0FFE /* WoolBlockInvocationTests */,
 				03FA8D611793367E00DEE56F /* Frameworks */,
 				03FA8D601793367E00DEE56F /* Products */,
 			);
@@ -68,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				03FA8D5F1793367E00DEE56F /* WoolBlockInvocation */,
+				03B0780417A25EEA00FB0FFE /* WoolBlockInvocationTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +137,9 @@
 			isa = PBXGroup;
 			children = (
 				03FA8D621793367E00DEE56F /* Foundation.framework */,
+				03B0780517A25EEA00FB0FFE /* SenTestingKit.framework */,
+				03B0780717A25EEA00FB0FFE /* Cocoa.framework */,
+				03B0780917A25EEA00FB0FFE /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -83,14 +147,14 @@
 		03FA8D641793367E00DEE56F /* WoolBlockInvocation */ = {
 			isa = PBXGroup;
 			children = (
-				03FA8D791793463200DEE56F /* WoolBlockHelper.h */,
-				03FA8D761793461700DEE56F /* WoolObjCEncoding.h */,
-				03FA8D771793461700DEE56F /* WoolObjCEncoding.m */,
-				03FA8D651793367E00DEE56F /* main.m */,
-				03FA8D731793457C00DEE56F /* WSSBlockSignature.h */,
-				03FA8D741793457C00DEE56F /* WSSBlockSignature.m */,
-				03FA8D70179336D300DEE56F /* WSSBlockInvocation.h */,
-				03FA8D71179336D300DEE56F /* WSSBlockInvocation.m */,
+				033A7EFE179DC84300F07B86 /* main.m */,
+				033A7EFF179DC84300F07B86 /* WoolBlockHelper.h */,
+				033A7F01179DC84300F07B86 /* WoolObjCEncoding.h */,
+				033A7F02179DC84300F07B86 /* WoolObjCEncoding.m */,
+				033A7F05179DC84300F07B86 /* WSSBlockSignature.h */,
+				033A7F06179DC84300F07B86 /* WSSBlockSignature.m */,
+				033A7F03179DC84300F07B86 /* WSSBlockInvocation.h */,
+				033A7F04179DC84300F07B86 /* WSSBlockInvocation.m */,
 				03FA8D671793367E00DEE56F /* Supporting Files */,
 				03FA8D7A17953EF200DEE56F /* libffi.dylib */,
 			);
@@ -101,7 +165,7 @@
 		03FA8D671793367E00DEE56F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				03FA8D681793367E00DEE56F /* WoolBlockInvocation-Prefix.pch */,
+				033A7F00179DC84300F07B86 /* WoolBlockInvocation-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -109,6 +173,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		03B0780317A25EEA00FB0FFE /* WoolBlockInvocationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03B0781717A25EEA00FB0FFE /* Build configuration list for PBXNativeTarget "WoolBlockInvocationTests" */;
+			buildPhases = (
+				03B077FF17A25EEA00FB0FFE /* Sources */,
+				03B0780017A25EEA00FB0FFE /* Frameworks */,
+				03B0780117A25EEA00FB0FFE /* Resources */,
+				03B0780217A25EEA00FB0FFE /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WoolBlockInvocationTests;
+			productName = WoolBlockInvocationTests;
+			productReference = 03B0780417A25EEA00FB0FFE /* WoolBlockInvocationTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 		03FA8D5E1793367E00DEE56F /* WoolBlockInvocation */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03FA8D6D1793367E00DEE56F /* Build configuration list for PBXNativeTarget "WoolBlockInvocation" */;
@@ -148,25 +230,101 @@
 			projectRoot = "";
 			targets = (
 				03FA8D5E1793367E00DEE56F /* WoolBlockInvocation */,
+				03B0780317A25EEA00FB0FFE /* WoolBlockInvocationTests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		03B0780117A25EEA00FB0FFE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03B0781217A25EEA00FB0FFE /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		03B0780217A25EEA00FB0FFE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		03B077FF17A25EEA00FB0FFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03B0781E17A2609000FB0FFE /* WoolObjCEncoding.m in Sources */,
+				03B0781F17A2609000FB0FFE /* WSSBlockSignature.m in Sources */,
+				03B0782017A2609000FB0FFE /* WSSBlockInvocation.m in Sources */,
+				03B0781B17A25F3400FB0FFE /* WoolBlockInvocationTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		03FA8D5B1793367E00DEE56F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03FA8D661793367E00DEE56F /* main.m in Sources */,
-				03FA8D72179336D300DEE56F /* WSSBlockInvocation.m in Sources */,
-				03FA8D751793457C00DEE56F /* WSSBlockSignature.m in Sources */,
-				03FA8D781793461700DEE56F /* WoolObjCEncoding.m in Sources */,
+				033A7F07179DC86300F07B86 /* main.m in Sources */,
+				033A7F08179DC86300F07B86 /* WoolObjCEncoding.m in Sources */,
+				033A7F09179DC86300F07B86 /* WSSBlockInvocation.m in Sources */,
+				033A7F0A179DC86300F07B86 /* WSSBlockSignature.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		03B0781017A25EEA00FB0FFE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03B0781117A25EEA00FB0FFE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		03B0781817A25EEA00FB0FFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WoolBlockInvocationTests/WoolBlockInvocationTests-Prefix.pch";
+				INFOPLIST_FILE = "WoolBlockInvocationTests/WoolBlockInvocationTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		03B0781917A25EEA00FB0FFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WoolBlockInvocationTests/WoolBlockInvocationTests-Prefix.pch";
+				INFOPLIST_FILE = "WoolBlockInvocationTests/WoolBlockInvocationTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
 		03FA8D6B1793367E00DEE56F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -229,9 +387,8 @@
 		03FA8D6E1793367E00DEE56F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BlockGlue/WoolBlockInvocation-Prefix.pch";
+				GCC_PREFIX_HEADER = "WoolBlockInvocation/WoolBlockInvocation-Prefix.pch";
 				PRODUCT_NAME = WoolBlockInvocation;
 			};
 			name = Debug;
@@ -239,9 +396,8 @@
 		03FA8D6F1793367E00DEE56F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "BlockGlue/WoolBlockInvocation-Prefix.pch";
+				GCC_PREFIX_HEADER = "WoolBlockInvocation/WoolBlockInvocation-Prefix.pch";
 				PRODUCT_NAME = WoolBlockInvocation;
 			};
 			name = Release;
@@ -249,6 +405,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		03B0781717A25EEA00FB0FFE /* Build configuration list for PBXNativeTarget "WoolBlockInvocationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03B0781817A25EEA00FB0FFE /* Debug */,
+				03B0781917A25EEA00FB0FFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		03FA8D5A1793367E00DEE56F /* Build configuration list for PBXProject "WoolBlockInvocation" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

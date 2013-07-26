@@ -12,12 +12,15 @@
 
 @interface WSSBlockInvocation : NSObject
 
++ (instancetype)invocationWithBlocks:(NSArray *)blocks;
+
 + (instancetype)invocationWithSignature:(WSSBlockSignature *)sig;
 
 - (WSSBlockSignature *)blockSignature;
 
 - (void)setBlock:(id)block;
 - (void)addBlock:(id)block;
+- (void)setBlocks:(NSArray *)blocks;
 - (id)blockAtIndex:(NSUInteger)idx;
 - (NSArray *)allBlocks;
 
@@ -27,7 +30,8 @@
 @property (assign, nonatomic) BOOL retainsArguments;
 
 - (void)getReturnValue:(void *)buffer;
-- (void * const *)returnValues;
+/* Provides list of return values that is owned by caller */
+- (void **)getReturnValues;
 
 - (void)invoke;
 - (id)invocationBlock;

@@ -20,7 +20,9 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
 - (id)initWithBlockSignature:(WSSBlockSignature *)sig;
 - (void *)allocate:(size_t)size;
 
-/* Construct a list of ffi_type * describing the method signature of this invocation. */
+/* Construct a list of ffi_type * describing the method signature of this 
+ * invocation. 
+ */
 - (ffi_type **)buildFFIArgTypeList;
 
 @end
@@ -36,15 +38,27 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
     NSMutableArray * retainedReturnValues;
 }
 
++ (instancetype)invocationWithBlocks:(NSArray *)blocks
+{
+    WSSBlockSignature * sig = [WSSBlockSignature signatureForBlock:blocks[0]];
+    id newinstance = [[self alloc] initWithBlockSignature:sig];
+    
+    [newinstance setBlocks:blocks];
+    
+    return newinstance;
+    
+}
+
 + (instancetype)invocationWithSignature:(WSSBlockSignature *)sig
 {
-    return AUTORELEASE([[self alloc] initWithBlockSignature:sig]);
+    return [[self alloc] initWithBlockSignature:sig];
 }
 
 - (id)init
 {
     [NSException raise:NSInvalidArgumentException
-                format:@"Use invocationWithSignature: to create a new instance"];
+                format:@"Use invocationWithSignature: or invocationWithBlocks:"
+                        " to create a new instance"];
     return nil;
 }
 
@@ -53,30 +67,17 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
     self = [super init];
     if( !self ) return nil;
     
-    blockSignature = RETAIN(sig);
+    blockSignature = sig;
     blocks = [NSMutableArray new];
     allocations = [NSMutableArray new];
+    arguments = [self allocate:(sizeof(void *) *
+                                [blockSignature numberOfArguments])];
+    arguments[0] = [self allocate:sizeof(id)];
     
     return self;
 }
 
 @synthesize retainsArguments;
-
-#if !__has_feature(objc_arc)
-- (void)dealloc
-{
-    // All non-object allocations were handled via allocate: and will
-    // be free'd along with the array of NSMutableData instances.
-    [retainedReturnValues release];
-    [retainedArgs release];
-    
-    [blockSignature release];
-    [blocks release];
-    [allocations release];
-    
-    [super dealloc];
-}
-#endif // Exclude if compiled with ARC
 
 - (void *)allocate:(size_t)size
 {
@@ -110,31 +111,38 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
 {
     WSSBlockSignature * newSig = [WSSBlockSignature signatureForBlock:block];
     NSAssert([newSig isEqual:blockSignature],
-             @"Signature for added Block %@ does not match existing signature "
-             "%@ for %@", newSig, blockSignature, self);
+             @"Signature for added Block (%@) does not match existing "
+             "signature (%@) for %@", newSig, blockSignature, self);
     [blocks addObject:block];
+}
+
+- (void)setBlocks:(NSArray *)newBlocks
+{
+    // Go through addBlock: rather than directly adding to array
+    // so that the signatures are checked.
+    [blocks removeAllObjects];
+    for( id block in newBlocks ){
+        [self addBlock:block];
+    }
 }
 
 - (id)blockAtIndex:(NSUInteger)idx
 {
-    return SAFE_RETURN([blocks objectAtIndex:idx]);
+    return [blocks objectAtIndex:idx];
 }
 
 - (NSArray *)allBlocks
 {
-    return AUTORELEASE([blocks copy]);
+    return [blocks copy];
 }
 
 - (void)setArgument:(void *)arg atIndex:(NSInteger)idx
 {
-    NSAssert(idx != 0, @"Argument 0 is reserved for a pointer to the invoked Block");
+    NSAssert(idx != 0,
+             @"Argument 0 is reserved for a pointer to the invoked Block");
     NSAssert(idx < [blockSignature numberOfArguments],
-             @"Setting argument at index %ld out of range for number of arguments %ld", idx,
-             [blockSignature numberOfArguments]);
-    if( !arguments ){
-        arguments = [self allocate:(sizeof(void *) * [blockSignature numberOfArguments])];
-        arguments[0] = [self allocate:sizeof(id)];
-    }
+             @"Setting argument at index %ld out of range for number of "
+             "arguments %ld", idx, [blockSignature numberOfArguments]);
     
     size_t size = [blockSignature sizeOfArgumentAtIndex:idx];
     arguments[idx] = [self allocate:size];
@@ -161,46 +169,77 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
     return;
 }
 
-- (void * const *)returnValues
+- (void **)getReturnValues
 {
-    return return_values;
+    NSAssert(return_values != NULL, @"No return value set for %@", self);
+    
+    
+    void ** buffer = malloc(sizeof(void *) * [blocks count]);
+    if( [blockSignature returnTypeIsObject] ){
+        
+        // Casting through void * here doesn't seem correct, but it's the only
+        // way to get the compiler not to complain -- __bridge casts error
+        // http://brokaw.github.io/2012/10/18/casting-indirect-pointers-with-arc.html
+        // has some related information.
+        [retainedReturnValues getObjects:(__unsafe_unretained id *)(void *)buffer
+                                   range:(NSRange){0, [blocks count]}];
+    }
+    else {
+        NSUInteger return_size = [blockSignature returnSize];
+        for( NSUInteger i = 0; i < [blocks count]; i++ ){
+            buffer[i] = malloc(return_size);
+            memcpy(buffer[i], return_values[i], return_size);
+        }
+    }
+    
+    return buffer;
 }
 
 - (void)invoke
 {
     NSAssert([blocks count] > 0, @"Cannot invoke %@ without Block", self);
-    NSUInteger num_args = [blockSignature numberOfArguments];
-    ffi_type ** arg_types = [self buildFFIArgTypeList];
-    ffi_type * ret_type = libffi_type_for_objc_encoding([blockSignature returnType]);
-    NSUInteger ret_size = [blockSignature returnSize];
-    return_values = [self allocate:sizeof(void *) * [blocks count]];
-    BOOL doRetainReturnVals = [blockSignature returnTypeIsObject];
-    if( doRetainReturnVals ){
-        retainedReturnValues = [NSMutableArray new];
-    }
     
+    NSUInteger num_args = [blockSignature numberOfArguments];
+    
+    ffi_type ** arg_types = [self buildFFIArgTypeList];
+    ffi_type * return_type;
+    return_type = libffi_type_for_objc_encoding([blockSignature returnType]);
+    
+    NSUInteger return_size = [blockSignature returnSize];
+    BOOL doRetainReturnVals = NO;
+    if( return_size > 0 ){
+        
+        return_values = [self allocate:sizeof(void *) * [blocks count]];
+        
+        doRetainReturnVals = [blockSignature returnTypeIsObject];
+        if( doRetainReturnVals ){
+            retainedReturnValues = [NSMutableArray new];
+        }
+    }
+
     ffi_cif inv_cif;
     ffi_status prep_status = ffi_prep_cif(&inv_cif, FFI_DEFAULT_ABI,
                                           (unsigned int)num_args,
-                                          ret_type, arg_types);
-    NSAssert(prep_status == FFI_OK, @"ffi_prep_cif failed for", self);
+                                          return_type, arg_types);
+    NSAssert(prep_status == FFI_OK, @"ffi_prep_cif() failed for", self);
     
     for( NSUInteger idx = 0; idx < [blocks count]; idx++ ){
         
-        void * ret_val = NULL;
-        if( ret_size > 0 ){
-            ret_val = [self allocate:ret_size];
-            NSAssert(ret_val != NULL,
+        void * return_val = NULL;
+        if( return_size > 0 ){
+            return_values[idx] = [self allocate:return_size];
+            return_val = return_values[idx];
+            NSAssert(return_values[idx] != NULL,
                      @"%@ failed to allocate space for return value", self);
         }
         
-        memcpy(arguments[0], (__bridge void *)[blocks objectAtIndex:idx], sizeof(id));
-        ffi_call(&inv_cif, BlockIMP([blocks objectAtIndex:idx]),
-                 ret_val, arguments);
-        return_values[idx] = ret_val;
+        void * currBlock = (__bridge void *)[blocks objectAtIndex:idx];
+        memcpy(arguments[0], &currBlock, sizeof(id));
+        ffi_call(&inv_cif, BlockIMP((__bridge id)currBlock),
+                 return_val, arguments);
         
         if( doRetainReturnVals ){
-            [retainedReturnValues addObject:(__bridge id)ret_val];
+            [retainedReturnValues addObject:(__bridge id)*(void **)return_val];
         }
     }
 }

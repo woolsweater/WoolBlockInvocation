@@ -14,6 +14,7 @@
 @interface WSSBlockSignature ()
 
 - (void)setAttributesFromEncoding:(const char *)newEncoding;
+- (void)releaseMallocdMemory;
 
 @end
 
@@ -32,7 +33,7 @@
     
     [newinstance setAttributesFromEncoding:types];
     
-    return AUTORELEASE(newinstance);
+    return newinstance;
 }
 
 + (instancetype)signatureForBlock:(id)block
@@ -42,16 +43,27 @@
 
 - (void)dealloc
 {
+    [self releaseMallocdMemory];
+}
+
+- (void)releaseMallocdMemory
+{
     free(encoding);
-    for( NSUInteger i = 0; i < numargs; i++ ){
-        free(argtypes[i]);
+    if( argtypes ){
+        for( NSUInteger i = 0; i < numargs; i++ ){
+            free(argtypes[i]);
+        }
     }
     free(argtypes);
     free(rettype);
+}
+
+static int strcmpNULLSafe(const char * s1, const char * s2)
+{
+    s1 = s1 != NULL ? s1 : "";
+    s2 = s2 != NULL ? s2 : "";
     
-#if !__has_feature(objc_arc)
-    [super dealloc];
-#endif // Exclude if compiled with ARC
+    return strcmp(s1, s2);
 }
 
 - (BOOL)isEqual:(id)other
@@ -61,10 +73,13 @@
     if( ![other isKindOfClass:[self class]] ) return NO;
     
     WSSBlockSignature * otherSig = other;
-    if( 0 != strcmp(rettype, otherSig->rettype) ) return NO;
+    
+    if( numargs != otherSig->numargs ) return NO;
+    
+    if( 0 != strcmpNULLSafe(rettype, otherSig->rettype) ) return NO;
     
     for( NSUInteger i = 0; i < numargs; i++ ){
-        if( 0 != strcmp(argtypes[i], otherSig->argtypes[i]) ) return NO;
+        if( 0 != strcmpNULLSafe(argtypes[i], otherSig->argtypes[i]) ) return NO;
     }
     
     return YES;
@@ -85,31 +100,17 @@
                                [self class], self, encoding, numargs, rettype];
 }
 
-static int strcmpNULLSafe(const char * s1, const char * s2)
-{
-    s1 = s1 != NULL ? s1 : "";
-    s2 = s2 != NULL ? s2 : "";
-    
-    return strcmp(s1, s2);
-}
-
 - (void)setAttributesFromEncoding:(const char *)newEncoding
 {
     if( encoding != newEncoding &&
         0 != strcmpNULLSafe(encoding, newEncoding) )
     {
-        free(encoding);
+        [self releaseMallocdMemory];
+        
         encoding = malloc(strlen(newEncoding)+1);
         strcpy(encoding, newEncoding);
         
         numargs = encoding_numberOfArguments(encoding);
-        
-        if( argtypes ){
-            for( NSUInteger i = 0; i < numargs; i++ ){
-                free(argtypes[i]);
-            }
-        }
-        free(argtypes);
         
         argtypes = malloc(sizeof(char *) * numargs);
         for( NSUInteger idx = 0; idx < numargs; idx++ ){
@@ -118,7 +119,6 @@ static int strcmpNULLSafe(const char * s1, const char * s2)
             argtypes[idx] = arg_createTypeString(arg);
         }
         
-        free(rettype);
         rettype = arg_createTypeString(encoding);
     }
 }

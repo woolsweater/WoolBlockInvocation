@@ -255,7 +255,7 @@ char * encoding_findArgument(const char *typedesc, int arg_idx, int *offset)
         }
         else
         {
-            char * ignored; 
+            char * ignored __attribute__((unused));
             ignored = arg_getOffset(desc_p, &arg_offset);
             
             *offset = arg_offset - self_offset;
