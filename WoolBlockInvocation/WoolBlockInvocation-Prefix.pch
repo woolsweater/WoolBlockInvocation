@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'WoolBlockInvocaiton' target in the 'WoolBlockInvocaiton' project
+// Prefix header for all source files of the 'WoolBlockInvocation' target in the 'WoolBlockInvocation' project
 //
 
 #ifdef __OBJC__

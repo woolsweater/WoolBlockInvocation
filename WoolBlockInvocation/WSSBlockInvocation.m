@@ -1,10 +1,10 @@
 //
 //  WSSBlockInvocation.m
-//  WoolBlockInvocaiton
+//  WoolBlockInvocation
 //
 //  Created by Joshua Caswell on 7/14/13.
 //  Copyright (c) 2013 Josh Caswell. All rights reserved.
-//
+//  Distributed under an MIT license. See LICENSE.txt for details.
 
 #import "WSSBlockInvocation.h"
 #import "WSSBlockSignature.h"
