@@ -175,7 +175,7 @@ char * arg_getType(const char *argdesc, char *buf, size_t buf_size)
 
 /* Takes a pointer to an argument encoding and returns a string which is owned
  * by the caller containing just the type portion of the encoding. */
-char * arg_createTypeString(const char *argdesc)
+char * arg_copyTypeString(const char *argdesc)
 {
     size_t len;
     const char * end;

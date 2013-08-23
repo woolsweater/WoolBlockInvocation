@@ -116,10 +116,10 @@ static int strcmpNULLSafe(const char * s1, const char * s2)
         for( NSUInteger idx = 0; idx < numargs; idx++ ){
             int ignored;
             char * arg = encoding_findArgument(encoding, (int)idx, &ignored);
-            argtypes[idx] = arg_createTypeString(arg);
+            argtypes[idx] = arg_copyTypeString(arg);
         }
         
-        rettype = arg_createTypeString(encoding);
+        rettype = arg_copyTypeString(encoding);
     }
 }
 

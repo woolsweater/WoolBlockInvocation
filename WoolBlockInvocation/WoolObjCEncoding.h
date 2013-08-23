@@ -49,7 +49,7 @@ char * arg_getType(const char *argdesc, char *buf, size_t buf_size);
 /* Takes a pointer to an argument encoding. Allocates and returns a string
  * containing just the type portion of the argument, properly NUL-terminated.
  */
-char * arg_createTypeString(const char *argdesc);
+char * arg_copyTypeString(const char *argdesc);
 
 BOOL arg_isObjectType(const char *argdesc);
 BOOL arg_isPointerType(const char *argdesc);
