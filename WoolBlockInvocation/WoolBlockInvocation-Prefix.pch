@@ -4,16 +4,4 @@
 
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
-
-    #if !__has_feature(objc_arc)
-        #define __bridge
-        #define __bridge_transfer
-        #define AUTORELEASE(obj) [(obj) autorelease]
-        #define RETAIN(obj) [(obj) retain]
-        #define SAFE_RETURN(obj)  AUTORELEASE(RETAIN((obj)))
-    #else
-        #define AUTORELEASE(obj) (obj)
-        #define RETAIN(obj) (obj)
-        #define SAFE_RETURN(obj) (obj)
-    #endif
 #endif
