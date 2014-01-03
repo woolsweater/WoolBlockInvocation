@@ -20,7 +20,8 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
 - (id)initWithBlockSignature:(WSSBlockSignature *)sig;
 - (void *)allocate:(size_t)size;
 
-/* Construct a list of ffi_type * describing the method signature of this 
+/**
+ * Construct a list of ffi_type * describing the method signature of this
  * invocation. 
  */
 - (ffi_type **)buildFFIArgTypeList;
@@ -277,7 +278,7 @@ ffi_type * libffi_type_for_objc_encoding(const char * str);
     } copy];
 }
 
-/*
+/**
  * Construct a list of ffi_type * describing the method signature of this
  * invocation. Steps through each argument in turn and interprets the ObjC
  * type encoding.
@@ -329,7 +330,8 @@ static ffi_type CGRectFFI = (ffi_type){ .size = 0,
     .elements = (ffi_type * [3]){&CGPointFFI,
         &CGSizeFFI, NULL}};
 
-/* Translate an ObjC encoding string into a pointer to the appropriate
+/**
+ * Translate an ObjC encoding string into a pointer to the appropriate
  * libffi type; this covers the CoreGraphics structs defined above,
  * and, on OS X, the AppKit equivalents.
  */
