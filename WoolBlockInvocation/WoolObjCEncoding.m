@@ -161,13 +161,13 @@ char * arg_getType(const char *argdesc, char *buf, size_t buf_size)
     
     if (!buf) return (char *)argdesc;
     if (!argdesc) {
-        strncpy(buf, "", buf_size);
+        strlcpy(buf, "", buf_size);
         return NULL;
     }
     
     end = skipType(argdesc);
     len = end - argdesc;
-    strncpy(buf, argdesc, MIN(len, buf_size));
+    strlcpy(buf, argdesc, MIN(len, buf_size));
     return buf + len;
     // Zero out the remainder of dst
     //if( len < dst_len ) memset(dst+len, 0, dst_len - len);
@@ -185,7 +185,7 @@ char * arg_copyTypeString(const char *argdesc)
     len = end - argdesc;
     
     char * ret = malloc(len+1);
-    strncpy(ret, argdesc, len);
+    strlcpy(ret, argdesc, len);
     *(ret+len) = '\0';
     
     return ret;
